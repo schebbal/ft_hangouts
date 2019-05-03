@@ -14,10 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ft_hangouts.data.DBContacts;
-
 public class DetailContacts extends Activity {
-    int from_Where_I_Am_Coming = 0;
+
     private DBContacts mydb ;
 
     TextView name ;
@@ -31,11 +29,11 @@ public class DetailContacts extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_contact);
-        name = (TextView) findViewById(R.id.editTextName);
-        phone = (TextView) findViewById(R.id.editTextPhone);
-        email = (TextView) findViewById(R.id.editTextStreet);
-        street = (TextView) findViewById(R.id.editTextEmail);
-        place = (TextView) findViewById(R.id.editTextCity);
+        name   =  findViewById(R.id.editTextName);
+        phone  =  findViewById(R.id.editTextPhone);
+        email  =  findViewById(R.id.editTextStreet);
+        street =  findViewById(R.id.editTextEmail);
+        place  =  findViewById(R.id.editTextCity);
 
         mydb = new DBContacts(this);
 
@@ -57,26 +55,26 @@ public class DetailContacts extends Activity {
                 if (!rs.isClosed())  {
                     rs.close();
                 }
-                Button b = (Button)findViewById(R.id.button1);
+                Button b = findViewById(R.id.button1);
                 b.setVisibility(View.INVISIBLE);
 
-                name.setText((CharSequence)nam);
+                name.setText(nam);
                 name.setFocusable(false);
                 name.setClickable(false);
 
-                phone.setText((CharSequence)phon);
+                phone.setText(phon);
                 phone.setFocusable(false);
                 phone.setClickable(false);
 
-                email.setText((CharSequence)emai);
+                email.setText(emai);
                 email.setFocusable(false);
                 email.setClickable(false);
 
-                street.setText((CharSequence)stree);
+                street.setText(stree);
                 street.setFocusable(false);
                 street.setClickable(false);
 
-                place.setText((CharSequence)plac);
+                place.setText(plac);
                 place.setFocusable(false);
                 place.setClickable(false);
             }
@@ -103,7 +101,7 @@ public class DetailContacts extends Activity {
         super.onOptionsItemSelected(item);
         switch(item.getItemId()) {
             case R.id.Edit_Contact:
-                Button b = (Button)findViewById(R.id.button1);
+                Button b = findViewById(R.id.button1);
                 b.setVisibility(View.VISIBLE);
                 name.setEnabled(true);
                 name.setFocusableInTouchMode(true);
@@ -189,4 +187,20 @@ public class DetailContacts extends Activity {
             }
         }
     }
+
+
+    //Button b = findViewById(R.id.button2);
+
+    public void sms(View view) {
+        Bundle dataBundle = new Bundle();
+        dataBundle.putInt("id", 1);
+
+        Intent intent = new Intent(getApplicationContext(),SendSMS.class);
+
+        intent.putExtras(dataBundle);
+        startActivity(intent);
+    }
+
+
+
 }

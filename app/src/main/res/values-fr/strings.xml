@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ft_hangouts</string>
+    <string name="action_settings">Réglages</string>
+    <string name="Add_New">Ajouter Contact</string>
+    <string name="edit">Editer Contact</string>
+    <string name="delete">Supprimer contact</string>
+    <string name="title_activity_detail_contact">DetailContacts</string>
+    <string name="name">Nom</string>
+    <string name="phone">Téléphone</string>
+    <string name="email">Email</string>
+    <string name="street">Addresse</string>
+    <string name="country">Ville/Etat/Code postal</string>
+    <string name="save">Enregister Contact</string>
+    <string name="deleteContact">Vous êtes sûr, vous voulez le supprimer.</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+</resources>

@@ -9,17 +9,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.example.ft_hangouts.data.DBContacts;
 
-import java.util.ArrayList;
+
+import java.util.List;
 
 public class MainActivity extends Activity {
-    public final static String EXTRA_MESSAGE = "MESSAGE";
     private ListView obj;
-    DBContacts mydb;
+    private DBContacts mydb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,27 +26,46 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         mydb = new DBContacts(this);
-        ArrayList array_list = mydb.getAllCotacts();
-        ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1, array_list);
+        List<ListContacts> listContacts = mydb.getAllContacts();
 
         obj = findViewById(R.id.listView1);
-        obj.setAdapter(arrayAdapter);
-        obj.setOnItemClickListener(new OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+        obj.setAdapter(new ListAdapter(this, listContacts));
 
-                int id_To_Search = arg2 + 1;
+
+        ImageButton imgbut = findViewById(R.id.addButton);
+
+        imgbut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle dataBundle = new Bundle();
+                dataBundle.putInt("id", 0);
+
+                Intent intent = new Intent(getApplicationContext(),DetailContacts.class);
+
+                intent.putExtras(dataBundle);
+                startActivity(intent);
+
+            }
+        });
+
+        obj.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Bundle dataBundle = new Bundle();
-                dataBundle.putInt("id", id_To_Search);
+                dataBundle.putInt("id", (int)id);
 
                 Intent intent = new Intent(getApplicationContext(),DetailContacts.class);
 
                 intent.putExtras(dataBundle);
                 startActivity(intent);
             }
+
         });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,7 +77,6 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         super.onOptionsItemSelected(item);
-
         switch(item.getItemId()) {
             case R.id.item1:Bundle dataBundle = new Bundle();
                 dataBundle.putInt("id", 0);
