@@ -1,20 +1,26 @@
 package com.example.ft_hangouts;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DetailContacts extends Activity {
+
+public class DetailContacts extends AppCompatActivity {
 
     private DBContacts mydb ;
 
@@ -25,10 +31,17 @@ public class DetailContacts extends Activity {
     TextView place;
     int id_To_Update = 0;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detail_contact);
+
+        // Configuring Toolbar
+        this.configureToolbar();
+
         name   =  findViewById(R.id.editTextName);
         phone  =  findViewById(R.id.editTextPhone);
         email  =  findViewById(R.id.editTextStreet);
@@ -36,6 +49,15 @@ public class DetailContacts extends Activity {
         place  =  findViewById(R.id.editTextCity);
 
         mydb = new DBContacts(this);
+/*
+        private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Utils.createContactIfNotExists(mydb, intent, context);
+                onResume();
+            }
+        };
+*/
 
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
@@ -55,7 +77,7 @@ public class DetailContacts extends Activity {
                 if (!rs.isClosed())  {
                     rs.close();
                 }
-                Button b = findViewById(R.id.button1);
+                ImageButton b = findViewById(R.id.saveContact);
                 b.setVisibility(View.INVISIBLE);
 
                 name.setText(nam);
@@ -77,6 +99,11 @@ public class DetailContacts extends Activity {
                 place.setText(plac);
                 place.setFocusable(false);
                 place.setClickable(false);
+            } else {
+                ImageButton a = findViewById(R.id.sendSMS);
+                a.setVisibility(View.INVISIBLE);
+                ImageButton d = findViewById(R.id.appel);
+                d.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -97,11 +124,28 @@ public class DetailContacts extends Activity {
         return true;
     }
 
+    private void configureToolbar(){
+        // Get the toolbar view inside the activity layout
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        // Sets the Toolbar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(MainActivity.COLOR_ID));
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
+        ImageButton a = findViewById(R.id.sendSMS);
+        a.setVisibility(View.INVISIBLE);
+        ImageButton appel = findViewById(R.id.appel);
+        appel.setVisibility(View.INVISIBLE);
         switch(item.getItemId()) {
             case R.id.Edit_Contact:
-                Button b = findViewById(R.id.button1);
+                ImageButton b = findViewById(R.id.saveContact);
                 b.setVisibility(View.VISIBLE);
                 name.setEnabled(true);
                 name.setFocusableInTouchMode(true);
@@ -156,51 +200,66 @@ public class DetailContacts extends Activity {
     }
 
     public void run(View view) {
+
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
             int Value = extras.getInt("id");
-            if(Value>0){
-                if(mydb.updateContact(id_To_Update,name.getText().toString(),
-                        phone.getText().toString(), email.getText().toString(),
-                        street.getText().toString(), place.getText().toString())){
-                    Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            if (name.length() >= 4 && phone.length() >= 4) {
+                if (Value > 0) {
+                    if (mydb.updateContact(id_To_Update, name.getText().toString(),
+                            phone.getText().toString(), email.getText().toString(),
+                            street.getText().toString(), place.getText().toString())) {
+                        Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
+                        Log.i("DATABASE", "not Updated");
+                    }
+                } else {
+                    if (mydb.insertContact(name.getText().toString(), phone.getText().toString(),
+                            email.getText().toString(), street.getText().toString(),
+                            place.getText().toString())) {
+                        Toast.makeText(getApplicationContext(), "insert done",
+                                Toast.LENGTH_SHORT).show();
+                        Log.i("DATABASE", "Insert done");
+                    } else {
+                        Toast.makeText(getApplicationContext(), "insert not done",
+                                Toast.LENGTH_SHORT).show();
+                        Log.i("DATABASE", "Insert not done");
+                    }
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
-                } else{
-                    Toast.makeText(getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
-                    Log.i("DATABASE", "not Updated");
                 }
-            } else{
-                if(mydb.insertContact(name.getText().toString(), phone.getText().toString(),
-                        email.getText().toString(), street.getText().toString(),
-                        place.getText().toString())){
-                    Toast.makeText(getApplicationContext(), "insert done",
-                            Toast.LENGTH_SHORT).show();
-                    Log.i("DATABASE", "Insert done");
-                } else{
-                    Toast.makeText(getApplicationContext(), "insert not done",
-                            Toast.LENGTH_SHORT).show();
-                    Log.i("DATABASE", "Insert not done");
-                }
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
+            }else{
+                //On affiche un petit message d'erreur dans un Toast
+                Toast.makeText(DetailContacts.this, "Enter le numero et/ou le message", Toast.LENGTH_SHORT).show();
             }
+
+
         }
     }
 
-
-    //Button b = findViewById(R.id.button2);
-
-    public void sms(View view) {
+   public void sms(View view) {
         Bundle dataBundle = new Bundle();
-        dataBundle.putInt("id", 1);
+        dataBundle.putAll(dataBundle);
+        int Value = dataBundle.getInt("id");
+        Log.i("BUNDLE", " " + Value);
 
-        Intent intent = new Intent(getApplicationContext(),SendSMS.class);
-
-        intent.putExtras(dataBundle);
+        String num = phone.getText().toString();
+        Log.i("SMS","" + num);
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("sms:" + num));
+        intent.putExtra("sms_body", "");
         startActivity(intent);
     }
 
+    public void appel(View view) {
 
-
+        //int num =  parseInt(phone.getText().toString());
+        String num = phone.getText().toString();
+        Log.i("PHONE","" + num);
+        Intent votreAppel = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + num));
+        votreAppel.putExtra("sms_body", "");
+        startActivity(votreAppel);
+    }
 }

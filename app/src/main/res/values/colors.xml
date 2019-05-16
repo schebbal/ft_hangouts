@@ -4,5 +4,34 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="text_normal">#ff1133</color>
-    <color name="text_pressed">#3777ff</color>
+    <color name="colorWhite">#ffffff</color>
+
+
+
+    <color name="dark_green">#002000</color>
+    <color name="yellow">#ffff00</color>
+    <style name="Widget.ThemeTest.Button" parent="@android:style/Widget.Holo.Button">
+        <item name="android:textColor">?android:attr/textColor</item>
+    </style>
+    <style name="Widget.ThemeTest.Button.Small" parent="@android:style/Widget.Holo.Button.Small">
+        <item name="android:textColor">?android:attr/textColor</item>
+    </style>
+    <style name="Widget.ThemeTest.Button.Toggle" parent="@android:style/Widget.Holo.Button.Toggle">
+        <item name="android:textColor">?android:attr/textColor</item>
+    </style>
+    <style name="Widget.ThemeTest.CompoundButton.CheckBox" parent="@android:style/Widget.Holo.CompoundButton.CheckBox">
+        <item name="android:textColor">?android:attr/textColor</item>
+    </style>
+    <style name="Widget.ThemeTest.CompoundButton.RadioButton" parent="@android:style/Widget.Holo.CompoundButton.RadioButton">
+        <item name="android:textColor">?android:attr/textColor</item>
+    </style>
+    <style name="ThemeTest" parent="@android:style/Theme.Holo">
+        <item name="android:background">@color/dark_green</item>
+        <item name="android:textColor">@color/yellow</item>
+        <item name="android:buttonStyle">@style/Widget.ThemeTest.Button</item>
+        <item name="android:buttonStyleSmall">@style/Widget.ThemeTest.Button.Small</item>
+        <item name="android:buttonStyleToggle">@style/Widget.ThemeTest.Button.Toggle</item>
+        <item name="android:checkboxStyle">@style/Widget.ThemeTest.CompoundButton.CheckBox</item>
+        <item name="android:radioButtonStyle">@style/Widget.ThemeTest.CompoundButton.RadioButton</item>
+    </style>
 </resources>

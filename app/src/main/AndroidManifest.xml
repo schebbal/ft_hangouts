@@ -1,23 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ft_hangouts">
-    <!--android:theme="@style/AppTheme"-->
+    package="com.example.ft_hangouts"
+    android:theme="@style/AppTheme">
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo42"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo42_round"
         android:supportsRtl="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning"
+        >
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
 
-        <activity android:name=".DetailContacts"/>
+        <!--activity android:name=".DetailContacts"/-->
+        <!-- A child of the main activity -->
+        <activity
+            android:name=".DetailContacts"
+            android:label="Detail"
+            android:parentActivityName=".MainActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
 
     </application>
 

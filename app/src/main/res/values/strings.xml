@@ -10,15 +10,17 @@
     <string name="email">Email</string>
     <string name="street">Street</string>
     <string name="country">City/State/Zip</string>
-    <string name="save">Save Contact</string>
+    <string name="save">Save</string>
     <string name="deleteContact">Are you sure, you want to delete it.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
-    <string name="numero">Numero</string>
-    <string name="app_name1">Envoie Sms</string>
     <string name="message">Message</string>
-    <string name="envoyer">Envoyer</string>
-    <string name="sms">send sms</string>
+    <string name="envoyer">Send</string>
+    <string name="sms">Send</string>
+    <string name="ColorBlue">Blue</string>
+    <string name="ColorRed">Red</string>
+    <string name="ColorGreen">Green</string>
+    <string name="appel">Call</string>
 
 </resources>

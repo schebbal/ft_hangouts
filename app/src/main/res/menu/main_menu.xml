@@ -2,10 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <item
-        android:id="@+id/item1"
-        android:icon="@drawable/add"
-        android:title="@string/Add_New"
+        android:id="@+id/blue"
+
+        android:title="@string/ColorBlue"
         android:drawable="@color/colorPrimary"
         />
+    <item
+        android:id="@+id/red"
+        android:title="@string/ColorRed"
+        android:drawable="@color/colorAccent"
+        />
+    <item
+        android:id="@+id/green"
+        android:title="@string/ColorGreen"
+        android:drawable="@color/colorPrimaryDark"
+        />
+    <!-- android:icon="@drawable/add"-->
     
 </menu>
