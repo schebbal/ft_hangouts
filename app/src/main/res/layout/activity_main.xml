@@ -20,8 +20,7 @@
        android:animateLayoutChanges="true"
        android:drawSelectorOnTop="true"
        android:layout_below="@id/toolbar"
-       android:textAppearance="?android:attr/textAppearanceSmall"
-       >
+       android:textAppearance="?android:attr/textAppearanceSmall">
    </ListView>
 
     <android.support.design.widget.FloatingActionButton
@@ -34,5 +33,4 @@
         android:onClick="@+id/onClick"
         android:src="@drawable/ic_person_add_black_24dp"
         android:layout_margin="16dp" />
-
 </RelativeLayout>

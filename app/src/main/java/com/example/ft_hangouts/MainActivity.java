@@ -1,47 +1,58 @@
 package com.example.ft_hangouts;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private ListView obj;
-    private DBContacts mydb;
-
     public static int COLOR_ID = 0xFFCCCCCC;
+    private ListView list;
+    private DBContacts db;
+    private FloatingActionButton addButton;
+    private String dateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState != null){
+            dateTime = savedInstanceState.getString("param");   //.getLong("param");
+            Toast.makeText(this, "Time : " + dateTime, Toast.LENGTH_SHORT).show();
+            Log.i("DATABASE", String.format("Insert not done : " + dateTime,"HH:mm:ss"));
+        }
+
+        addButton = findViewById(R.id.addButton);
+        addButton.setBackgroundTintList(ColorStateList.valueOf(COLOR_ID));
 
         //Configuting Toolbar
         this.configureToolbar();
 
-        mydb = new DBContacts(this);
-        List<ListContacts> listContacts = mydb.getAllContacts();
+        db = new DBContacts(this);
+        List<ListContacts> listContacts = db.getAllContacts();
 
-        obj = findViewById(R.id.listView1);
-        obj.setAdapter(new ListAdapter(this, listContacts));
+        list = findViewById(R.id.listView1);
+        list.setAdapter(new ListAdapter(this, listContacts));
 
 
-        ImageButton imgbut = findViewById(R.id.addButton);
-
-        imgbut.setOnClickListener(new View.OnClickListener() {
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle dataBundle = new Bundle();
@@ -55,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        obj.setOnItemClickListener(new OnItemClickListener() {
+        list.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -73,6 +84,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public static String getCurrentTimeStamp(){
+        try {
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            String currentDateTime = dateFormat.format(new Date()); // Find todays date
+
+            return currentDateTime;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -86,37 +111,74 @@ public class MainActivity extends AppCompatActivity {
         // Sets the Toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(COLOR_ID));
-
+        addButton.setBackgroundTintList(ColorStateList.valueOf(COLOR_ID));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         super.onOptionsItemSelected(item);
 
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-
         switch (item.getItemId())
         {
 
             case R.id.blue:
                 COLOR_ID = getResources().getColor(R.color.colorPrimary);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
                 break;
-
             case R.id.red:
                 COLOR_ID = getResources().getColor(R.color.colorAccent);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorAccent)));
                 break;
-
             case R.id.green:
                 COLOR_ID = getResources().getColor(R.color.colorPrimaryDark);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
-                break;
-
-            default:
                 break;
         }
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(COLOR_ID));
+        addButton.setBackgroundTintList(ColorStateList.valueOf(COLOR_ID));
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String currentDateTime = dateFormat.format(new Date()); // Find todays date
+        savedInstanceState.putString("param", currentDateTime);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getDelegate().onStart();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Toast.makeText(this, dateTime, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dateTime = getCurrentTimeStamp();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getDelegate().onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getDelegate().onDestroy();
     }
 
     public boolean onKeyDown(int keycode, KeyEvent event) {

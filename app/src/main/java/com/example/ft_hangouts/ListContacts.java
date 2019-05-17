@@ -2,7 +2,7 @@ package com.example.ft_hangouts;
 
 public class ListContacts {
 
-    public  int    _id;
+    private  int    _id;
     private String _name ;
     private String _phone;
     private String _email;

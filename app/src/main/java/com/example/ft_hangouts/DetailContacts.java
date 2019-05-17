@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -49,15 +50,13 @@ public class DetailContacts extends AppCompatActivity {
         place  =  findViewById(R.id.editTextCity);
 
         mydb = new DBContacts(this);
-/*
-        private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Utils.createContactIfNotExists(mydb, intent, context);
-                onResume();
-            }
-        };
-*/
+
+        ImageButton a = findViewById(R.id.sendSMS);
+        a.setBackground(new ColorDrawable(MainActivity.COLOR_ID));
+        ImageButton d = findViewById(R.id.appel);
+        d.setBackground(new ColorDrawable(MainActivity.COLOR_ID));
+        ImageButton b = findViewById(R.id.saveContact);
+        b.setBackground(new ColorDrawable(MainActivity.COLOR_ID));
 
         Bundle extras = getIntent().getExtras();
         if(extras !=null) {
@@ -77,8 +76,9 @@ public class DetailContacts extends AppCompatActivity {
                 if (!rs.isClosed())  {
                     rs.close();
                 }
-                ImageButton b = findViewById(R.id.saveContact);
+
                 b.setVisibility(View.INVISIBLE);
+
 
                 name.setText(nam);
                 name.setFocusable(false);
@@ -100,9 +100,7 @@ public class DetailContacts extends AppCompatActivity {
                 place.setFocusable(false);
                 place.setClickable(false);
             } else {
-                ImageButton a = findViewById(R.id.sendSMS);
                 a.setVisibility(View.INVISIBLE);
-                ImageButton d = findViewById(R.id.appel);
                 d.setVisibility(View.INVISIBLE);
             }
         }
@@ -147,6 +145,7 @@ public class DetailContacts extends AppCompatActivity {
             case R.id.Edit_Contact:
                 ImageButton b = findViewById(R.id.saveContact);
                 b.setVisibility(View.VISIBLE);
+                b.setBackground(new ColorDrawable(MainActivity.COLOR_ID));
                 name.setEnabled(true);
                 name.setFocusableInTouchMode(true);
                 name.setClickable(true);
@@ -233,7 +232,7 @@ public class DetailContacts extends AppCompatActivity {
                 }
             }else{
                 //On affiche un petit message d'erreur dans un Toast
-                Toast.makeText(DetailContacts.this, "Enter le numero et/ou le message", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailContacts.this, "Numéro et/ou Name incorrect (4 caractères minimum)", Toast.LENGTH_SHORT).show();
             }
 
 
